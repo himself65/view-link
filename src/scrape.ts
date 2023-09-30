@@ -78,13 +78,17 @@ const scrapeMetaTags = (url: string, html: any) => {
   const title = getMetatag('title')
     ? getMetatag('title')
     : $('title').first().text();
-  console.log('$', $(`link[type="application/json+oembed"]`).attr('title'));
+
+  const favicon =
+    $('link[rel="shortcut icon"]').attr('href') ||
+    // use largest favicon
+    $('link[rel="icon"]').last().attr('href') ||
+    $('link[rel="apple-touch-icon"]').attr('href');
 
   return {
     url,
-    title: title,
-    favicon: $('link[rel="shortcut icon"]').attr('href'),
-    // description: $('meta[name=description]').attr('content'),
+    title,
+    favicon,
     description: getMetatag('description'),
     image: getMetatag('image'),
     author: getMetatag('author'),
